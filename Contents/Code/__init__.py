@@ -156,7 +156,7 @@ def TorrentList(sender):
           "Please make sure Transmission is running with Remote access enabled.  For more information please see http://wiki.plexapp.com/index.php/Transmission"
       )
   elif result["torrents"] != None:
-    dir = MediaContainer()
+    dir = MediaContainer(viewGroup="List")
     progress    = 100;
     for torrent in result["torrents"]:
       summary = ""
@@ -249,7 +249,7 @@ def TorrentList(sender):
 def TorrentInfo(sender, name, status, hash):
   # Display an action menu for this torrent
   # #######################################
-  dir = MediaContainer()
+  dir = MediaContainer(viewGroup="List")
   dir.Append(Function(DirectoryItem(ViewFiles,			L('MenuViewFiles'),	subtitle=None,summary=None,thumb=R(ICON),art=R(ART)), hash=hash))
   if status == TRANSMISSION_PAUSED:
     dir.Append(Function(DirectoryItem(ResumeTorrent,L('MenuResume'),		subtitle=None,summary=None,thumb=R(ICON),art=R(ART)), hash=hash))
@@ -290,7 +290,7 @@ def ViewFiles(sender, hash):
       "Unable to list files."
     )
 
-  dir = MediaContainer()
+  dir = MediaContainer(viewGroup="List")
   for torrent in result["torrents"]:
     if torrent["hashString"] != hash:
       continue
@@ -372,7 +372,7 @@ def AddTorrent(sender, torrentUrl):
 # This is a long list so it isn't used
 def TVShowList(sender):
 
-    dir = MediaContainer()
+    dir = MediaContainer(viewGroup="List")
 
     showsPage = HTML.ElementFromURL('http://ezrss.it/shows/', errors='ignore')
 
@@ -407,7 +407,7 @@ def TVShowListFolders(sender):
 # This returns only shows within that subsection
 def TVShowListSubfolders(sender, letter):
 
-    dir = MediaContainer()
+    dir = MediaContainer(viewGroup="List")
 
     showsPage = HTML.ElementFromURL('http://ezrss.it/shows/', errors='ignore')
 
@@ -425,7 +425,7 @@ def TVShowListSubfolders(sender, letter):
 # This lists all available torrents for the chosen show
 def TVEpisodeList(sender, name, url):
 
-    dir = MediaContainer()
+    dir = MediaContainer(viewGroup="List")
 
     feed = RSS.FeedFromURL(url)['entries']
 
@@ -447,7 +447,7 @@ def SearchTorrents(sender):
 
 # I might drop IsoHunt from the next version as it returns a lot of...ahem...adult results regardless of search terms.
 def SearchIsoHunt(sender):
-  dir = MediaContainer()
+  dir = MediaContainer(viewGroup="List")
   dir.Append(Function(InputDirectoryItem(SearchIsoHuntCategory,"Search all categories","",summary="",thumb=R(ICON),art=R(ART)),category=99))
   dir.Append(Function(InputDirectoryItem(SearchIsoHuntCategory,"Movies","",summary=None,thumb=R(ICON),art=R(ART)),category=1))
   dir.Append(Function(InputDirectoryItem(SearchIsoHuntCategory,"Audio","",summary=None,thumb=R(ICON),art=R(ART)),category=2))
@@ -463,7 +463,7 @@ def SearchIsoHunt(sender):
   return dir
 
 def SearchIsoHuntCategory(sender, query=None, category=99):
-  dir = MediaContainer()
+  dir = MediaContainer(viewGroup="List")
   url = "http://isohunt.com/js/rss"
   if query != None:
     url += "/%s" % query
@@ -486,7 +486,7 @@ def SearchIsoHuntCategory(sender, query=None, category=99):
 # This function was a lot longer in the previous version of the
 # Framework. It was so much simpler this time round.
 def SearchEZTV(sender, query=None):
-  dir = MediaContainer()
+  dir = MediaContainer(viewGroup="List")
   url = "http://ezrss.it/search/index.php?simple&mode=rss&show_name="
   if query != None:
     url += "%s" % query
